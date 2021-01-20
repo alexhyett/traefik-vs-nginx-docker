@@ -1,0 +1,31 @@
+version: '3.4'
+services:
+  traefik:
+    image: 'traefik:2.3'
+    container_name: 'traefik'
+    restart: 'unless-stopped'
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - './traefik-ssl/traefik.toml:/traefik.toml'
+      - './traefik-ssl/traefik_dynamic.toml:/traefik_dynamic.toml'
+      - './traefik-ssl/acme.json:/acme.json'
+    networks:
+      - pi
+
+  whoami:
+    image: 'traefik/whoami'
+    restart: 'unless-stopped'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.whoami.rule=PathPrefix(`/whoami{regex:$$|/.*}`)'
+      - 'traefik.http.services.whoami.loadbalancer.server.port=80'
+      - 'traefik.http.routers.whoami.middlewares=simpleAuth@file'
+    networks:
+      - pi
+
+networks:
+  pi:
+    external: true

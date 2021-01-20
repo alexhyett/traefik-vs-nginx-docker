@@ -23,3 +23,15 @@ docker-compose -f docker-compose.traefik.yml up
 ```
 
 You will then be able to access whoami from http://localhost/whoami and the Traefik dashboard from http://localhost:8080.
+
+### Secure version
+
+You need to replace `youremailhere` in `traefik.toml` and `yourdomain.com` in `traefik_dynamic.toml` for this to work.
+
+```
+docker-compose -f docker-compose.traefik-ssl.yml up
+```
+
+You will then be able to access whoami from https://localhost/whoami and the Traefik dashboard from https://localhost/dashboard.
+
+The username is `admin` and the password is `admin`. Read my blog post on how to set this up, [Traefik vs Nginx for Reverse Proxy with Docker on a Raspberry Pi](https://www.alexhyett.com/traefik-vs-nginx-docker-raspberry-pi)
