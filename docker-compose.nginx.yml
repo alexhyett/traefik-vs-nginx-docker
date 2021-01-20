@@ -1,0 +1,21 @@
+version: '3.4'
+services:
+  nginx:
+    build: nginx
+    restart: 'unless-stopped'
+    networks:
+      - pi
+    ports:
+      - '80:80'
+    depends_on:
+      - whoami
+
+  whoami:
+    image: 'traefik/whoami'
+    restart: 'unless-stopped'
+    networks:
+      - pi
+
+networks:
+  pi:
+    external: true
